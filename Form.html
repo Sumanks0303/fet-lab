@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agriculture Management System - Crop Information Form</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            height: 100%;
+            background-image: url("img4.jpg");
+            background-position: fixed;
+            background-repeat: no-repeat ;
+            background-size: cover;
+        }
+        form {
+            max-width: 400px;
+            margin: auto;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+        label {
+            font-weight: bold;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("form").submit(function (event) {
+                $(".error").text("");
+                if ($("#cropName").val() === "") {
+                    $("#cropNameError").text("Crop Name is required");
+                    event.preventDefault();
+                }
+                let plantingDate = new Date($("#plantingDate").val());
+                let harvestDate = new Date($("#harvestDate").val());
+                if (plantingDate >= harvestDate) {
+                    $("#harvestDateError").text("Harvest Date should be after Planting Date");
+                    event.preventDefault();
+                }
+
+                let quantity = $("#quantity").val();
+                if (isNaN(quantity) || quantity <= 0) {
+                    $("#quantityError").text("Quantity should be a positive number");
+                    event.preventDefault();
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <div class="container text-center mt-5">
+            <h1><b>Agriculture Management System</b></h1>
+            <p><b>Crop Information Form</b></p>
+        </div>
+    </header>
+    <form action="submit.php" method="post">
+        <div class="container">
+            <label for="cropName">Crop Name:</label>
+            <input type="text" id="cropName" name="cropName" class="form-control" required>
+            <span class="error" id="cropNameError"></span>
+            <label for="cropType">Crop Type:</label>
+            <select id="cropType" name="cropType" class="form-control" required>
+                <option value="cereal">Food crop</option>
+                <option value="legume">Cash crop</option>
+                <option value="vegetable">Plantation crop</option>
+            </select>
+            <label for="plantingDate">Planting Date:</label>
+            <input type="date" id="plantingDate" name="plantingDate" class="form-control" required>
+            <label for="harvestDate">Harvest Date:</label>
+            <input type="date" id="harvestDate" name="harvestDate" class="form-control" required>
+            <span class="error" id="harvestDateError"></span>
+            <label for="quantity">Quantity (in kg):</label>
+            <input type="number" id="quantity" name="quantity" class="form-control" required>
+            <span class="error" id="quantityError"></span>
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" class="form-control" required>
+            <label for="notes">Additional Notes:</label>
+            <textarea id="notes" name="notes" rows="1.5" class="form-control"></textarea><br>
+            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+        </div>
+    </form>
+</body>
+</html>
